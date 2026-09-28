@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #eaf4f2;
+  --color-primary-100: #d0e7e4;
+  --color-primary-200: #a7d2cc;
+  --color-primary-500: #0f5f55;
+  --color-primary-600: #0c4d45;
+  --color-primary-700: #0a3f38;
+  --color-primary-900: #062824;
+
+  --color-surface-bg: #f4f6f7;
+  --color-surface-card: #ffffff;
+  --color-surface-muted: #eef2f4;
+
+  --color-ink-primary: #101a1e;
+  --color-ink-secondary: #5a6b72;
+  --color-ink-muted: #8a98a0;
+
+  --color-status-income: #157a5f;
+  --color-status-income-soft: #e2f3ee;
+  --color-status-expense: #b4453c;
+  --color-status-expense-soft: #fbebe9;
+  --color-status-warning: #b7791f;
+  --color-status-warning-soft: #fdf3e1;
+
+  --color-line-subtle: #e3e8eb;
+  --color-line-strong: #cfd7dc;
+}
+
+:root {
+  --background: #f4f6f7;
+  --foreground: #101a1e;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f6f7;
+}
+::-webkit-scrollbar-thumb {
+  background: #cfd7dc;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a7b7bf;
+}
+
+/* Device screen reflections and styling */
+.device-reflection {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0) 50%
+  );
+}
+
+/* Subtle elevation cards */
+.card-elevation-subtle {
+  box-shadow: 0 1px 3px rgba(16, 26, 30, 0.04), 0 4px 12px rgba(16, 26, 30, 0.03);
+}
+
+.card-elevation-raised {
+  box-shadow: 0 4px 6px -1px rgba(16, 26, 30, 0.05), 0 16px 32px -4px rgba(16, 26, 30, 0.08);
+}
+
+.card-elevation-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-elevation-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -2px rgba(16, 26, 30, 0.08), 0 24px 48px -6px rgba(16, 26, 30, 0.12);
+}
