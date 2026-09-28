@@ -4,9 +4,11 @@ import React from 'react';
 import Image from 'next/image';
 import { Download, ArrowUpRight, ShieldCheck } from 'lucide-react';
 import { CURRENT_RELEASE } from '@/config/release';
+import { useDownload } from '@/context/DownloadContext';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { status, progress, startDownload } = useDownload();
 
   return (
     <footer className="bg-[#101A1E] text-white pt-16 pb-12 border-t border-[#2B3B42]">
@@ -84,14 +86,20 @@ export default function Footer() {
           <div className="md:col-span-3 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white/90">Downloads</h4>
             <div className="space-y-2">
-              <a
-                href={CURRENT_RELEASE.apkDownloadPath}
-                download={CURRENT_RELEASE.apkFileName}
+              <button
+                type="button"
+                onClick={() => startDownload()}
                 className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#0F5F55] hover:bg-[#0A4740] text-sm font-semibold text-white shadow-xs transition-colors"
               >
                 <Download className="w-4 h-4" />
-                <span>Download APK ({CURRENT_RELEASE.apkFileSize})</span>
-              </a>
+                <span>
+                  {status === 'downloading'
+                    ? `Downloading (${progress}%)`
+                    : status === 'completed'
+                    ? 'Downloaded ✓'
+                    : `Download APK (${CURRENT_RELEASE.apkFileSize})`}
+                </span>
+              </button>
 
               <a
                 href={CURRENT_RELEASE.githubReleaseUrl}

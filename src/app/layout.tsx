@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { DownloadProvider } from '@/context/DownloadContext';
+import DownloadProgressCard from '@/components/DownloadProgressCard';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -75,9 +77,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} font-sans scroll-smooth`}>
       <body className="min-h-screen flex flex-col bg-[#F4F6F7] text-[#101A1E] antialiased selection:bg-[#E4F0EE] selection:text-[#0F5F55]">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <DownloadProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <DownloadProgressCard />
+        </DownloadProvider>
       </body>
     </html>
   );

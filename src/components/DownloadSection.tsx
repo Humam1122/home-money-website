@@ -9,11 +9,14 @@ import {
   Copy,
   Check,
   ExternalLink,
+  Loader2,
 } from 'lucide-react';
 import { CURRENT_RELEASE } from '@/config/release';
+import { useDownload } from '@/context/DownloadContext';
 
 export default function DownloadSection() {
   const [copied, setCopied] = useState(false);
+  const { status, progress, startDownload } = useDownload();
 
   const copyDownloadLink = () => {
     if (typeof window !== 'undefined') {
@@ -83,14 +86,28 @@ export default function DownloadSection() {
 
           {/* Primary Action Button & GitHub Release */}
           <div className="pt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-            <a
-              href={CURRENT_RELEASE.apkDownloadPath}
-              download={CURRENT_RELEASE.apkFileName}
+            <button
+              type="button"
+              onClick={() => startDownload()}
               className="flex-1 inline-flex items-center justify-center gap-3 px-8 py-4 text-base font-bold text-white bg-[#0F5F55] hover:bg-[#0A4740] rounded-2xl shadow-md hover:shadow-lg transition-all focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F5F55] focus-visible:ring-offset-2 active:scale-[0.99]"
             >
-              <Download className="w-5 h-5 shrink-0" />
-              <span>Download APK ({CURRENT_RELEASE.apkFileSize})</span>
-            </a>
+              {status === 'downloading' ? (
+                <>
+                  <Loader2 className="w-5 h-5 shrink-0 animate-spin" />
+                  <span>Downloading ({progress}%)...</span>
+                </>
+              ) : status === 'completed' ? (
+                <>
+                  <CheckCircle2 className="w-5 h-5 shrink-0 text-[#E4F0EE]" />
+                  <span>Downloaded ✓ (Save Again)</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-5 h-5 shrink-0" />
+                  <span>Download for Android ({CURRENT_RELEASE.apkFileSize})</span>
+                </>
+              )}
+            </button>
 
             <button
               type="button"
@@ -123,8 +140,16 @@ export default function DownloadSection() {
             </a>
           </div>
 
+          {/* Background Download Note */}
+          <div className="mt-3 text-xs text-[#5A6B72] flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#157A5F]" />
+            <span>
+              Background download enabled: you can freely scroll and read other sections while the APK downloads.
+            </span>
+          </div>
+
           {/* Desktop vs Phone Context Note */}
-          <div className="mt-4 text-xs text-[#8A98A0] text-center sm:text-left flex items-center justify-center sm:justify-start gap-1.5">
+          <div className="mt-4 text-xs text-[#8A98A0] text-center sm:text-left flex items-center justify-center sm:justify-start gap-1.5 pt-4 border-t border-[#E3E8EB]">
             <Smartphone className="w-3.5 h-3.5 shrink-0" />
             <span>
               Visiting from your PC or laptop? Click &ldquo;Copy Link&rdquo; to send the URL to your Android device, or transfer the downloaded file via USB.
@@ -132,7 +157,7 @@ export default function DownloadSection() {
           </div>
 
           {/* Release Highlights / Changelog */}
-          <div className="mt-8 pt-6 border-t border-[#E3E8EB]">
+          <div className="mt-6 pt-4 border-t border-[#E3E8EB]">
             <h4 className="text-xs font-bold uppercase tracking-wider text-[#5A6B72] mb-3">
               Included in this release:
             </h4>
@@ -170,7 +195,7 @@ export default function DownloadSection() {
                 Step 1: Download
               </span>
               <p className="text-xs text-[#5A6B72]">
-                Tap &ldquo;Download APK&rdquo; above. If your browser asks, tap &ldquo;Download anyway&rdquo;.
+                Tap &ldquo;Download for Android&rdquo; above. If your browser asks, tap &ldquo;Download anyway&rdquo;.
               </p>
             </div>
 

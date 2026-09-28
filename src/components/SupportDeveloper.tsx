@@ -1,36 +1,42 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Heart, Coffee, Sparkles } from 'lucide-react';
+import { Heart, Coffee, Sparkles, ExternalLink } from 'lucide-react';
+import { BUY_ME_A_COFFEE_URL } from '@/config/release';
 
 export default function SupportDeveloper() {
-  const [selectedAmount, setSelectedAmount] = useState<number | 'custom'>(10);
-  const [customVal, setCustomVal] = useState<string>('25');
+  const [selectedAmount, setSelectedAmount] = useState<number | 'custom'>(5);
+  const [customVal, setCustomVal] = useState<string>('20');
   const [showStatus, setShowStatus] = useState<boolean>(false);
 
   const presets = [5, 10, 15];
 
   const handleSupportClick = () => {
-    setShowStatus(true);
+    if (BUY_ME_A_COFFEE_URL) {
+      window.open(BUY_ME_A_COFFEE_URL, '_blank', 'noopener,noreferrer');
+    } else {
+      setShowStatus(true);
+    }
   };
 
   return (
     <section className="py-16 sm:py-20 bg-[#FFFFFF] border-t border-[#E3E8EB]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#F8FAFB] rounded-3xl p-6 sm:p-10 border border-[#E3E8EB] text-center">
+        <div className="bg-[#F8FAFB] rounded-3xl p-6 sm:p-10 border border-[#E3E8EB] text-center relative overflow-hidden">
           <div className="w-12 h-12 rounded-2xl bg-[#E4F0EE] text-[#0F5F55] flex items-center justify-center mx-auto mb-4 shadow-xs">
             <Heart className="w-6 h-6 text-[#0F5F55]" />
           </div>
 
           <span className="text-xs font-semibold uppercase tracking-wider text-[#0F5F55] block mb-1">
-            Optional Support
+            Enjoying Home Money?
           </span>
           <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#101A1E]">
-            Support Independent Development
+            Support the developer ☕
           </h3>
           <p className="mt-2 text-sm sm:text-base text-[#5A6B72] max-w-xl mx-auto leading-relaxed">
-            Home Money is free, local, and ad-free. If this app helps you manage your household
-            expenses with peace of mind, you can optionally support its development.
+            Home Money is free, local-first, and completely ad-free. If this app helps you manage
+            your household spending with peace of mind, voluntary contributions are warmly
+            appreciated.
           </p>
 
           {/* Amount Selector Tabs */}
@@ -85,8 +91,8 @@ export default function SupportDeveloper() {
             </div>
           )}
 
-          {/* Support CTA Button */}
-          <div className="mt-6">
+          {/* Support Actions */}
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               type="button"
               onClick={handleSupportClick}
@@ -97,6 +103,18 @@ export default function SupportDeveloper() {
                 Support ${selectedAmount === 'custom' ? customVal || '0' : selectedAmount}
               </span>
             </button>
+
+            {BUY_ME_A_COFFEE_URL && (
+              <a
+                href={BUY_ME_A_COFFEE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-5 py-3 rounded-xl text-sm font-semibold text-[#101A1E] bg-white border border-[#CFD7DC] hover:bg-[#EEF2F4] transition-all"
+              >
+                <span>Buy Me a Coffee</span>
+                <ExternalLink className="w-3.5 h-3.5 text-[#5A6B72]" />
+              </a>
+            )}
           </div>
 
           {/* Transparent Notice */}
@@ -104,8 +122,10 @@ export default function SupportDeveloper() {
             <div className="mt-4 p-3 bg-white rounded-xl border border-[#A7D2CC] max-w-md mx-auto text-xs text-[#0F5F55] flex items-center gap-2 text-left animate-in fade-in duration-150">
               <Sparkles className="w-4 h-4 shrink-0 text-[#157A5F]" />
               <span>
-                Payment provider integration is coming soon. Thank you deeply for wanting to
-                support Home Money!
+                Donation checkout integration is coming soon (configure{' '}
+                <code className="font-mono text-[#101A1E]">BUY_ME_A_COFFEE_URL</code> in{' '}
+                <code className="font-mono text-[#101A1E]">src/config/release.ts</code>). Thank you
+                deeply for supporting Home Money!
               </span>
             </div>
           ) : (

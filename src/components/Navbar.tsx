@@ -5,10 +5,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Download, Menu, X, ArrowUpRight } from 'lucide-react';
 import { CURRENT_RELEASE } from '@/config/release';
+import { useDownload } from '@/context/DownloadContext';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { status, progress, startDownload } = useDownload();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,25 +84,33 @@ export default function Navbar() {
 
           {/* CTA & Actions */}
           <div className="hidden sm:flex items-center gap-3">
-            <a
-              href="#download"
+            <button
+              type="button"
+              onClick={() => startDownload()}
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#0F5F55] hover:bg-[#0A4740] rounded-xl shadow-xs hover:shadow-sm transition-all focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F5F55] focus-visible:ring-offset-2"
             >
               <Download className="w-4 h-4" />
-              <span>Download APK</span>
-            </a>
+              <span>
+                {status === 'downloading'
+                  ? `Downloading (${progress}%)`
+                  : status === 'completed'
+                  ? 'Downloaded ✓'
+                  : 'Download APK'}
+              </span>
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2">
-            <a
-              href="#download"
+            <button
+              type="button"
+              onClick={() => startDownload()}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-[#0F5F55] rounded-lg shadow-xs"
               aria-label="Download APK"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>APK</span>
-            </a>
+              <span>{status === 'downloading' ? `${progress}%` : 'APK'}</span>
+            </button>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -130,14 +140,21 @@ export default function Navbar() {
             ))}
           </nav>
           <div className="pt-2 border-t border-[#E3E8EB] flex flex-col gap-2">
-            <a
-              href="#download"
-              onClick={() => setMobileMenuOpen(false)}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                startDownload();
+              }}
               className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-[#0F5F55] rounded-xl shadow-xs"
             >
               <Download className="w-4 h-4" />
-              <span>Download APK ({CURRENT_RELEASE.apkFileSize})</span>
-            </a>
+              <span>
+                {status === 'downloading'
+                  ? `Downloading (${progress}%)...`
+                  : `Download APK (${CURRENT_RELEASE.apkFileSize})`}
+              </span>
+            </button>
             <a
               href={CURRENT_RELEASE.githubRepoUrl}
               target="_blank"

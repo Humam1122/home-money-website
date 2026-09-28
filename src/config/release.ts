@@ -1,7 +1,9 @@
 /**
  * Home Money Release Configuration
  *
- * Single source of truth for APK versioning, file metadata, and release notes.
+ * Single source of truth for APK versioning, file metadata, release notes,
+ * and developer support URLs.
+ *
  * APK binaries are distributed via GitHub Releases to respect repository file limits.
  *
  * When publishing a new release:
@@ -18,7 +20,9 @@ export interface AppRelease {
   releaseDate: string;
   apkFileName: string;
   apkFileSize: string;
+  apkExpectedBytes: number;
   apkDownloadPath: string;
+  apkStreamingApiPath: string;
   githubReleaseUrl: string;
   packageName: string;
   minAndroidVersion: string;
@@ -35,8 +39,10 @@ export const CURRENT_RELEASE: AppRelease = {
   releaseDate: 'September 2026',
   apkFileName: 'Home-Money-v1.0.0.apk',
   apkFileSize: '102.3 MB',
+  apkExpectedBytes: 107257762,
   apkDownloadPath:
     'https://github.com/Humam1122/home-money-website/releases/download/v1.0.0/Home-Money-v1.0.0.apk',
+  apkStreamingApiPath: '/api/download',
   githubReleaseUrl:
     'https://github.com/Humam1122/home-money-website/releases/tag/v1.0.0',
   packageName: 'com.homemoney.app',
@@ -56,3 +62,13 @@ export const CURRENT_RELEASE: AppRelease = {
     '100% offline-ready embedded SQLite database',
   ],
 };
+
+/**
+ * Buy Me a Coffee / Support Developer URL.
+ * Set your public Buy Me a Coffee or Ko-fi URL here or via environment variable.
+ * When left empty, the UI displays an optional contribution card with preset tiers
+ * and clearly indicates that donation link integration is coming soon.
+ * Example: 'https://buymeacoffee.com/yourname'
+ */
+export const BUY_ME_A_COFFEE_URL: string =
+  process.env.NEXT_PUBLIC_BUY_ME_A_COFFEE_URL ?? '';

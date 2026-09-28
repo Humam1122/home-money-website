@@ -1,12 +1,15 @@
 'use client';
 
 import React from 'react';
-import { Download, ArrowRight, ShieldCheck, Database, Smartphone, Check } from 'lucide-react';
+import { Download, ArrowRight, ShieldCheck, Database, Smartphone, Check, Loader2, CheckCircle2 } from 'lucide-react';
 import PhoneFrame from './PhoneFrame';
 import { DashboardMockup } from './AppScreenMockups';
 import { CURRENT_RELEASE } from '@/config/release';
+import { useDownload } from '@/context/DownloadContext';
 
 export default function Hero() {
+  const { status, progress, startDownload } = useDownload();
+
   return (
     <section className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-40 lg:pb-32 overflow-hidden bg-[#F4F6F7]">
       {/* Background Subtle Gradient Glow */}
@@ -62,16 +65,31 @@ export default function Hero() {
 
             {/* CTA Action Buttons */}
             <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <a
-                href="#download"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-base font-semibold text-white bg-[#0F5F55] hover:bg-[#0A4740] rounded-xl shadow-xs hover:shadow-md transition-all focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F5F55] focus-visible:ring-offset-2"
+              <button
+                type="button"
+                onClick={() => startDownload()}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 text-base font-semibold text-white bg-[#0F5F55] hover:bg-[#0A4740] rounded-xl shadow-xs hover:shadow-md transition-all focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#0F5F55] focus-visible:ring-offset-2 active:scale-[0.99]"
               >
-                <Download className="w-5 h-5" />
-                <span>Download for Android</span>
-                <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full font-mono">
-                  {CURRENT_RELEASE.apkFileSize}
-                </span>
-              </a>
+                {status === 'downloading' ? (
+                  <>
+                    <Loader2 className="w-5 h-5 shrink-0 animate-spin" />
+                    <span>Downloading ({progress}%)...</span>
+                  </>
+                ) : status === 'completed' ? (
+                  <>
+                    <CheckCircle2 className="w-5 h-5 shrink-0 text-[#E4F0EE]" />
+                    <span>Downloaded ✓</span>
+                  </>
+                ) : (
+                  <>
+                    <Download className="w-5 h-5" />
+                    <span>Download for Android</span>
+                    <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full font-mono">
+                      {CURRENT_RELEASE.apkFileSize}
+                    </span>
+                  </>
+                )}
+              </button>
 
               <a
                 href="#features"

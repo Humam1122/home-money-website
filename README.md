@@ -35,14 +35,17 @@ home-money-website/
 │       └── 07-pdf-report.png          # (Optional) Real device screenshot
 ├── src/
 │   ├── app/
+│   │   ├── api/
+│   │   │   └── download/
+│   │   │       └── route.ts           # Streaming proxy route for release APK with CORS headers
 │   │   ├── globals.css                # Tailwind CSS v4 tokens & typography
 │   │   ├── icon.png                   # Dynamic site icon / favicon
-│   │   ├── layout.tsx                 # SEO meta tags, OpenGraph, font setup
+│   │   ├── layout.tsx                 # SEO meta tags, OpenGraph, DownloadProvider
 │   │   ├── page.tsx                   # Main landing page
 │   │   ├── robots.ts                  # robots.txt handler
 │   │   └── sitemap.ts                 # sitemap.xml generator
 │   ├── components/
-│   │   ├── Navbar.tsx                 # Responsive header with mobile drawer
+│   │   ├── Navbar.tsx                 # Responsive header with mobile drawer & APK CTA
 │   │   ├── Hero.tsx                   # Value proposition, download CTA, device frame
 │   │   ├── PhoneFrame.tsx             # Modern Android smartphone mockup frame
 │   │   ├── AppScreenMockups.tsx       # Pixel-accurate fallback screen previews
@@ -52,11 +55,14 @@ home-money-website/
 │   │   ├── AnalyticsSection.tsx       # 5 on-device calculation metrics
 │   │   ├── PrivacySection.tsx         # Transparent local-first SQLite explanation
 │   │   ├── DownloadSection.tsx        # Direct APK download & Android install guide
-│   │   ├── SupportDeveloper.tsx       # Optional developer contribution tiers
+│   │   ├── DownloadProgressCard.tsx   # Persistent floating background download progress card
+│   │   ├── SupportDeveloper.tsx       # Optional developer support & Buy Me a Coffee
 │   │   ├── FAQSection.tsx             # Accordion FAQ
 │   │   └── Footer.tsx                 # Branding, links, license, and credits
+│   ├── context/
+│   │   └── DownloadContext.tsx        # Global streaming download state & progress tracking
 │   └── config/
-│       └── release.ts                 # Single source of truth for APK versioning
+│       └── release.ts                 # Single source of truth for APK versioning & support URLs
 ├── package.json
 └── tsconfig.json
 ```
